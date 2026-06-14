@@ -1,2 +1,10 @@
-export const colors = { soil:'#2f241d', bark:'#5a3825', sand:'#d7b98e', parchment:'#f3e3c4', moss:'#536b36', red:'#a9352a', redDark:'#64251f', blue:'#2f6f9f', blueDark:'#22475f', stone:'#6f766f', disabled:'#897b6b', white:'#fffaf0' };
-export const tribeMeta = { red:{label:'Red Tribe', description:'Aggressive fire and strength', accent:colors.red, dark:colors.redDark}, blue:{label:'Blue Tribe', description:'Wisdom, water, and defense', accent:colors.blue, dark:colors.blueDark} } as const;
+export const colors = {
+  void: '#05070B', panel: '#0A0F14', panel2: '#101923', grid: '#142536', line: '#24445A',
+  cyan: '#00E5FF', green: '#00FF88', amber: '#FFB800', violet: '#AA66FF', red: '#FF335F',
+  text: '#E6FBFF', muted: '#7893A0', disabled: '#26333D', water: '#071A2A', black: '#000000', white: '#FFFFFF',
+  soil: '#05070B', parchment: '#0A0F14', moss: '#00E5FF'
+};
+export const tribeMeta = {
+  cipher: { label: 'CIPHER CELL', description: 'Covert data dominance and precision network control.', accent: colors.cyan, dark: '#073D4A' },
+  vanguard: { label: 'VANGUARD NET', description: 'Distributed energy logistics and resilient field operations.', accent: colors.green, dark: '#073B29' },
+} as const;
