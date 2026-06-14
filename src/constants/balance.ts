@@ -1,0 +1,11 @@
+import { CampLevel, EquipmentItem, Inventory, ResourceType } from '../types/game';
+export const XP_REWARDS = { collectResource: 10, craftItem: 20, greetPlayer: 5, contributePerUnit: 1 } as const;
+export const RESOURCE_SPAWN_RADIUS_METERS = 500;
+export const COLLECTION_RADIUS_METERS = 50;
+export const PLAYER_INTERACTION_RADIUS_METERS = 50;
+export const CAMP_INTERACTION_RADIUS_METERS = 100;
+export const XP_PER_LEVEL = 100;
+export const RESOURCE_TYPES: ResourceType[] = ['wood','stone','food'];
+export const CRAFTING_RECIPES: Record<EquipmentItem, Partial<Inventory>> = { spear:{wood:5,stone:3}, axe:{wood:4,stone:5}, torch:{wood:3,food:1} };
+export const CAMP_LEVEL_REQUIREMENTS: Record<CampLevel, Inventory | null> = { 0:{wood:100,stone:100,food:0}, 1:{wood:250,stone:250,food:100}, 2:{wood:500,stone:500,food:250}, 3:null };
+export const RESOURCE_EMOJI: Record<ResourceType|EquipmentItem,string> = { wood:'🪵', stone:'🪨', food:'🍇', spear:'🪛', axe:'🪓', torch:'🔥' };

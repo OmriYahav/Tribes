@@ -1,0 +1,2 @@
+export const colors = { soil:'#2f241d', bark:'#5a3825', sand:'#d7b98e', parchment:'#f3e3c4', moss:'#536b36', red:'#a9352a', redDark:'#64251f', blue:'#2f6f9f', blueDark:'#22475f', stone:'#6f766f', disabled:'#897b6b', white:'#fffaf0' };
+export const tribeMeta = { red:{label:'Red Tribe', description:'Aggressive fire and strength', accent:colors.red, dark:colors.redDark}, blue:{label:'Blue Tribe', description:'Wisdom, water, and defense', accent:colors.blue, dark:colors.blueDark} } as const;

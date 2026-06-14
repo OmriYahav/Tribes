@@ -1,0 +1,13 @@
+export type Tribe = 'red' | 'blue';
+export type ResourceType = 'wood' | 'stone' | 'food';
+export type EquipmentItem = 'spear' | 'axe' | 'torch';
+export type Coordinates = { latitude: number; longitude: number };
+export type User = { id: string; username: string; tribe: Tribe; xp: number; level: number };
+export type Inventory = Record<ResourceType, number>;
+export type Equipment = Record<EquipmentItem, number>;
+export type Resource = { id: string; type: ResourceType; coordinates: Coordinates; collected: boolean };
+export type CampLevel = 0 | 1 | 2 | 3;
+export type Camp = { tribe: Tribe; coordinates?: Coordinates; level: CampLevel; progress: Inventory };
+export type PlayerStats = { totalXp: number; level: number; resourcesCollected: number; itemsCrafted: number; resourcesContributed: number; playersGreeted: number; campContributionScore: number };
+export type MockPlayer = { id: string; username: string; tribe: Tribe; level: number; coordinates: Coordinates; distance: number; status: string };
+export type LeaderboardEntry = { id: string; username: string; tribe: Tribe; level: number; totalXp: number; contributionScore: number; isCurrentUser?: boolean };
