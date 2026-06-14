@@ -2,13 +2,23 @@ import { create } from 'zustand';
 import { clearState, loadState, saveState } from '../services/storageService';
 import { CRAFTING_RECIPES, XP_REWARDS } from '../constants/balance';
 import { Camp, Equipment, EquipmentItem, Inventory, Resource, ResourceType, Tribe, User } from '../types/game';
+import { isFaction } from '../theme/theme';
 import { emptyInventory, levelUpCampIfReady } from '../utils/camp';
 import { levelFromXp } from '../utils/xp';
-type State={hydrated:boolean; user?:User; inventory:Inventory; equipment:Equipment; camp?:Camp; resources:Resource[]; greetedPlayerIds:string[]; stats:{totalXp:number;level:number;resourcesCollected:number;itemsCrafted:number;resourcesContributed:number;playersGreeted:number;campContributionScore:number;missionsCompleted:number;distanceMeters:number}; hydrate:()=>Promise<void>; createProfile:(u:string,t:Tribe)=>void; addXp:(n:number)=>void; setResources:(r:Resource[])=>void; collectResource:(id:string)=>void; craft:(item:EquipmentItem)=>boolean; contribute:(amounts:Inventory)=>boolean; greet:(id:string)=>boolean; reset:()=>Promise<void>};
+export type State={hydrated:boolean; user?:User; inventory:Inventory; equipment:Equipment; camp?:Camp; resources:Resource[]; greetedPlayerIds:string[]; stats:{totalXp:number;level:number;resourcesCollected:number;itemsCrafted:number;resourcesContributed:number;playersGreeted:number;campContributionScore:number;missionsCompleted:number;distanceMeters:number}; hydrate:()=>Promise<void>; createProfile:(u:string,t:Tribe)=>void; addXp:(n:number)=>void; setResources:(r:Resource[])=>void; collectResource:(id:string)=>void; craft:(item:EquipmentItem)=>boolean; contribute:(amounts:Inventory)=>boolean; greet:(id:string)=>boolean; reset:()=>Promise<void>};
 const initial={hydrated:false, inventory:emptyInventory(), equipment:{scanner:0,relayKey:0,fieldKit:0}, resources:[], greetedPlayerIds:[], stats:{totalXp:0,level:1,resourcesCollected:0,itemsCrafted:0,resourcesContributed:0,playersGreeted:0,campContributionScore:0,missionsCompleted:0,distanceMeters:0}};
+
+const DEFAULT_TRIBE: Tribe = 'cipher';
+const normalizeTribe = (value: unknown): Tribe => isFaction(value) ? value : DEFAULT_TRIBE;
+const normalizeSavedState = (saved: Partial<State> | null): Partial<State> => {
+  if (!saved) return {};
+  const user = saved.user ? { ...saved.user, tribe: normalizeTribe(saved.user.tribe) } : undefined;
+  const camp = saved.camp ? { ...saved.camp, tribe: normalizeTribe(saved.camp.tribe) } : undefined;
+  return { ...saved, user, camp };
+};
 const persist=(s:State)=>saveState({user:s.user,inventory:s.inventory,equipment:s.equipment,camp:s.camp,resources:s.resources,greetedPlayerIds:s.greetedPlayerIds,stats:s.stats}).catch(()=>{});
 export const useGameStore=create<State>((set,get)=>({...initial,
- hydrate:async()=>{ const saved=await loadState<Partial<State>>(); set({...initial,...saved,hydrated:true}); },
+ hydrate:async()=>{ const saved=normalizeSavedState(await loadState<Partial<State>>()); set({...initial,...saved,hydrated:true}); },
  createProfile:(username,tribe)=>set(s=>{ const user={id:`user-${Date.now()}`,username,tribe,xp:0,level:1}; const camp={tribe,level:0 as const,progress:emptyInventory()}; const ns={...s,user,camp}; persist(ns as State); return ns; }),
  addXp:(n)=>set(s=>{ if(!s.user)return s; const xp=s.user.xp+n; const level=levelFromXp(xp); const ns={...s,user:{...s.user,xp,level},stats:{...s.stats,totalXp:xp,level}}; persist(ns as State); return ns; }),
  setResources:(resources)=>set(s=>{const ns={...s,resources}; persist(ns as State); return ns;}),
