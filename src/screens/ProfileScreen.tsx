@@ -1,0 +1,6 @@
+import { Text } from 'react-native';
+import { Button, Card, ProgressBar, Screen, Title } from '../components/ui';
+import { useGameStore } from '../store/gameStore';
+import { tribeMeta } from '../theme/theme';
+import { xpProgress } from '../utils/xp';
+export function ProfileScreen(){ const user=useGameStore(s=>s.user)!; const inv=useGameStore(s=>s.inventory); const eq=useGameStore(s=>s.equipment); const stats=useGameStore(s=>s.stats); const reset=useGameStore(s=>s.reset); const xp=xpProgress(user.xp); return <Screen><Title>Profile</Title><Card><Text>{user.username}</Text><Text>{tribeMeta[user.tribe].label}</Text><Text>Level {user.level} • {user.xp} total XP</Text><ProgressBar value={xp.percent}/><Text>{xp.current}/{xp.required} XP to next level</Text></Card><Card><Text>Inventory: 🪵 {inv.wood} 🪨 {inv.stone} 🍇 {inv.food}</Text><Text>Equipment: 🪛 {eq.spear} 🪓 {eq.axe} 🔥 {eq.torch}</Text></Card><Card><Text>Collected: {stats.resourcesCollected}</Text><Text>Crafted: {stats.itemsCrafted}</Text><Text>Contributed: {stats.resourcesContributed}</Text><Text>Players greeted: {stats.playersGreeted}</Text><Text>Camp score: {stats.campContributionScore}</Text></Card><Button onPress={()=>void reset()}>Reset local data (testing)</Button></Screen> }
